@@ -1,13 +1,21 @@
 <template>
   <div>
 
-    <router-link to="/">Home</router-link>
+    <div id="navigation-links">
 
-    <router-link to="/about">About the site</router-link>
+      <span class="nav-link">
+        <router-link to="/">Home</router-link>
+      </span>
 
-    <p>Header image by
-      <a href="https://unsplash.com/photos/KpBXAOs80YI">@chrislawton on Unsplash</a>
-    </p>
+      <span class="nav-link">
+        <router-link to="/about">About the site</router-link>
+      </span>
+
+      <p>Header image by
+        <a href="https://unsplash.com/photos/KpBXAOs80YI">@chrislawton on Unsplash</a>
+      </p>
+
+    </div>
 
   </div>
 
@@ -21,5 +29,9 @@ export default {
 </script>
 
 <style scoped>
+
+.nav-link {
+  margin: 1rem;
+}
 
 </style>

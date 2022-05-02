@@ -1,15 +1,23 @@
 <template>
-  <div>
-    <p v-for="state in states" v-bind:key="state.name">
-      {{ state.name }}
-    </p>
+  <div class="state-list-container">
+    <div class="state-container" v-for="state in states" v-bind:key="state.name">
+
+      <state-detail
+          v-bind:state="state"
+          v-on:update-visited="updateVisited"
+      ></state-detail>
+
+    </div>
   </div>
 </template>
 
-
 <script>
+import StateDetail from "@/components/StateDetail";
 
 export default {
+  components: {
+    StateDetail
+  },
   name: 'StateList',
   data() {
     return {
@@ -24,6 +32,11 @@ export default {
       this.$stateService.getAllStates().then( states => {
         this.states = states
       })
+    },
+    updateVisited(stateName, visited) {
+      this.$stateService.setVisited(stateName, visited).then( () => {
+        this.fetchAllStates()
+      })
     }
   }
 }
@@ -34,5 +47,14 @@ export default {
 
 <style scoped>
 
+.state-list-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+}
+
+.state-container {
+  margin: 1rem;
+}
 
 </style>
