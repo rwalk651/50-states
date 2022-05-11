@@ -5,8 +5,8 @@
     <p v-if="state.visited">You have visited this state</p>
     <p v-else>You have not visited this state</p>
 
-    <div id="map-container">
-      <l-map v-bind:zoom="state.zoom" v-bind:center="mapCenter">
+    <div id="map-container" v-if="dataReady">
+      <l-map ref="map" v-on:ready="onMapReady" v-bind:zoom="state.zoom" v-bind:center="mapCenter">
         <l-tile-layer
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           attribution="&copy; OpenStreetMap contributors">
@@ -27,7 +27,9 @@ export default {
   },
   data() {
     return {
-      state: {}
+      state: {},
+      dataReady: false,
+      mapReady: false
     }
   },
   mounted() {
@@ -38,7 +40,30 @@ export default {
     fetchStateData() {
       this.$stateService.getOneState(this.state.name).then( state => {
         this.state = state
+        this.dataReady = true
+        this.setMapview()
       })
+      .catch( err => {
+        if ( err.response && err.response.status === 404 ) {
+          this.state.name = '?'
+        } else {
+          alert('Error fetching data about this state')
+          console.error(err)
+        }
+      })
+    },
+    onMapReady() {
+      this.mapReady = true
+    },
+    setMapview() {
+      if (this.mapReady && this.dataReady) {
+        this.$ref.map.leafletObject.setView(this.mapCenter, this.state.zoom)
+      }
+    }
+  },
+  computed: {
+    mapCenter() {
+      return [this.state.lat, this.state.lon]
     }
   }
 }
