@@ -45,7 +45,12 @@ export default {
       })
       .catch( err => {
         if ( err.response && err.response.status === 404 ) {
-          this.state.name = '?'
+          // redirects home if state name is wrong
+          this.state.name = 'what? Redirecting...'
+          // code from https://stackoverflow.com/a/17150241
+          window.setTimeout(function(){
+            window.location.href = "https://warm-escarpment-97380.herokuapp.com/#/";
+          }, 3500)
         } else {
           alert('Error fetching data about this state')
           console.error(err)
