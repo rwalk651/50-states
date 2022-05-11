@@ -14,5 +14,10 @@ export default {
         return axios.patch('/api/state/' + stateName, requestData).then( response => {
             return response.data
         })
+    },
+    getOneState(stateName) {
+        return axios.get(`/api/state/${stateName}`).then( response => {
+            return response.data
+        })
     }
 }

@@ -10,6 +10,19 @@ router.get('/states', function(req, res, next) {
         .catch( err => next(err) )
 })
 
+router.get('/state/:name', function(req, res, name) {
+    let stateName = req.params.name
+    States.findOne({where: { name: stateName}})
+        .then( state => {
+            if (state) {
+                return res.json(state)
+            } else {
+                return res.status(404).send('State Not Found')
+            }
+        })
+        .catch( err => next(err) )
+})
+
 // patch route updates whether state is visited or not
 router.patch('/state/:name', function(req, res, next) {
     let stateName = req.params.name
